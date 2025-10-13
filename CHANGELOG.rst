@@ -1,6 +1,11 @@
 Change log for dserver-dependency-graph-plugin
 ==============================================
 
+0.4.2 (13Oct25)
+---------------
+
+* Switched from stndard flask JWT authentication to customized dserver authntication
+
 0.4.1 (9Jul24)
 ---------------
 
