@@ -33,7 +33,7 @@ from pymongo import MongoClient
 from dservercore import AuthenticationError, ExtensionABC
 from dservercore.sql_models import DatasetSchema
 from dservercore.utils import _preprocess_privileges
-from dserver_direct_mongo_plugin.utils import _dict_to_mongo_query
+from .utils import _dict_to_mongo_query
 
 from .schemas import DependencyKeysSchema
 
@@ -246,7 +246,8 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
     mongo_aggregation = query_dependency_graph(pre_query=pre_query,
                                                post_query=post_query,
                                                dependency_keys=dependency_keys,
-                                               mongo_dependency_view=dependency_view)
+                                               mongo_dependency_view=dependency_view,
+                                               mongo_collection=current_app.config['MONGO_COLLECTION'])
     logger.debug("Constructed mongo aggregation: {}".format(mongo_aggregation))
     cx = DependencyGraphExtension.db[current_app.config['MONGO_COLLECTION']].aggregate(mongo_aggregation)
 

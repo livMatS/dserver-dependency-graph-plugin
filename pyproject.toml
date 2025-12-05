@@ -14,7 +14,7 @@ dynamic = ["version"]
 dependencies = [
         "dtoolcore>=3.18.0",
         "dservercore>=0.20.0",
-        "dserver-direct-mongo-plugin",
+        "pymongo",
     ]
 
 [project.optional-dependencies]
