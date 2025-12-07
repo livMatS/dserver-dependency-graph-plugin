@@ -1,21 +1,22 @@
 [build-system]
-requires = ["setuptools>=42", "setuptools_scm[toml]>=6.3"]
-build-backend = "setuptools.build_meta"
+requires = ["flit_scm"]
+build-backend = "flit_scm:buildapi"
 
 [project]
 name = "dserver-dependency-graph-plugin"
 description = "dserver plugin for receiving s3 notifications on updated objects."
 readme = "README.rst"
-license = {file = "LICENSE"}
+license = {text = "MIT"}
 authors = [
     {name = "Johannes L. Hörmann", email = "johannes.laurin@gmail.com"},
 ]
 dynamic = ["version"]
+requires-python = ">=3.8"
 dependencies = [
-        "dtoolcore>=3.18.0",
-        "dservercore>=0.20.0",
-        "pymongo",
-    ]
+    "dtoolcore>=3.18.0",
+    "dservercore>=0.20.0",
+    "pymongo",
+]
 
 [project.optional-dependencies]
 test = [
@@ -31,13 +32,17 @@ Documentation = "https://github.com/livMatS/dserver-dependency-graph-plugin/blob
 Repository = "https://github.com/livMatS/dserver-dependency-graph-plugin"
 Changelog = "https://github.com/livMatS/dserver-dependency-graph-plugin/blob/main/CHANGELOG.rst"
 
+[project.entry-points."dservercore.extension"]
+DependencyGraphExtension = "dserver_dependency_graph_plugin:DependencyGraphExtension"
+
+[tool.flit.module]
+name = "dserver_dependency_graph_plugin"
+
 [tool.setuptools_scm]
 version_scheme = "guess-next-dev"
 local_scheme = "no-local-version"
 write_to = "dserver_dependency_graph_plugin/version.py"
 
-[tool.setuptools]
-packages = ["dserver_dependency_graph_plugin"]
-
-[project.entry-points."dservercore.extension"]
-"DependencyGraphExtension" = "dserver_dependency_graph_plugin:DependencyGraphExtension"
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=dserver_dependency_graph_plugin --cov-report=term-missing"
