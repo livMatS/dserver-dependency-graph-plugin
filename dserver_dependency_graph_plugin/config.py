@@ -8,6 +8,11 @@ CONFIG_SECRETS_TO_OBFUSCATE = []
 
 
 class Config(object):
+    # MongoDB connection settings
+    # These are required for the dependency graph plugin to connect to MongoDB
+    MONGO_URI = os.environ.get("MONGO_URI")
+    MONGO_DB = os.environ.get("MONGO_DB")
+    MONGO_COLLECTION = os.environ.get("MONGO_COLLECTION")
     # If enabled, the underlying database will offer dependency graph views on
     # the server's default collection. Those views offer on-the-fly-generated
     # collections of undirected per-dataset adjacency lists in order to
