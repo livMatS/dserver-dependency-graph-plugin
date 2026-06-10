@@ -20,7 +20,7 @@ def test_config_info_route(tmp_app_with_users, snowwhite_token):  # NOQA
     assert r.status_code == 200
 
     expected_response = {
-        'dependency_keys': ['readme.derived_from.uuid',
+        'dependency_keys': ['readme_parsed.derived_from.uuid',
                             'annotations.source_dataset_uuid'],
         'dynamic_dependency_keys': True,
         'enable_dependency_view': True,

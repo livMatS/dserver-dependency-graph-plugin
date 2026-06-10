@@ -4,7 +4,11 @@ import os
 AFFIRMATIVE_EXPRESSIONS = ['true', '1', 'y', 'yes', 'on']
 
 
-CONFIG_SECRETS_TO_OBFUSCATE = []
+CONFIG_SECRETS_TO_OBFUSCATE = [
+    "MONGO_URI",
+    "MONGO_DB",
+    "MONGO_COLLECTION",
+]
 
 
 class Config(object):
@@ -39,7 +43,7 @@ class Config(object):
     # a single key or a JSON-formatted list of keys.
     # Nested fields are separated by a dot (.)
     DEPENDENCY_KEYS = [
-        'readme.derived_from.uuid',
+        'readme_parsed.derived_from.uuid',
         'annotations.source_dataset_uuid'
     ]
 

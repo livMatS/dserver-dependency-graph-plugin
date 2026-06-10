@@ -116,7 +116,8 @@ def _get_dependency_view_bookkeeping_record(dependency_keys):
 @assert_dependency_view_bookkeeping_collection
 def _create_dependency_view_bookkeeping_record(name, dependency_keys):
     ret = DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].insert_one(
-        {'name': name, 'keys': dependency_keys, 'accessed_on': datetime.datetime.utcnow()})
+        {'name': name, 'keys': dependency_keys,
+         'accessed_on': datetime.datetime.now(datetime.timezone.utc)})
     # drop oldest entry if number of documents exceeds allowed maximum
     count = DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].count_documents({})
     if count > Config.MONGO_DEPENDENCY_VIEW_CACHE_SIZE:
@@ -135,7 +136,8 @@ def _create_dependency_view_bookkeeping_record(name, dependency_keys):
 def _update_dependency_view_bookkeeping_record(name):
     """Updated record to dependency view bookkeeping collection or add if new."""
     return DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].update_one(
-        {'name': name}, {'$set': {'accessed_on': datetime.datetime.utcnow()}})
+        {'name': name},
+        {'$set': {'accessed_on': datetime.datetime.now(datetime.timezone.utc)}})
 
 
 # mid-level dependency view helpers
@@ -146,7 +148,8 @@ def _create_dependency_view(dependency_keys):
     :returns: str"""
 
     # generate unique, valid name for view from prefix and ISO date string
-    datestring = datetime.datetime.utcnow().isoformat()
+    datestring = datetime.datetime.now(
+        datetime.timezone.utc).replace(tzinfo=None).isoformat()
     name = Config.MONGO_DEPENDENCY_VIEW_PREFIX + datestring
 
     if name in DependencyGraphExtension.db.list_collection_names():

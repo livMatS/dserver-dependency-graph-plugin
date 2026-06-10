@@ -82,6 +82,28 @@ def _dict_to_mongo(query_dict):
         return {"$and": [q for q in sub_queries]}
 
 
+# MongoDB operators that execute server-side JavaScript. A raw query
+# containing any of these could run arbitrary code on the database server.
+_FORBIDDEN_MONGO_OPERATORS = frozenset(
+    ("$where", "$function", "$accumulator"))
+
+
+def _assert_no_forbidden_operators(raw_mongo):
+    """Recursively reject MongoDB operators that execute JavaScript.
+
+    :raises: ValueError if a forbidden operator occurs anywhere in the query
+    """
+    if isinstance(raw_mongo, dict):
+        for key, value in raw_mongo.items():
+            if key in _FORBIDDEN_MONGO_OPERATORS:
+                raise ValueError(
+                    f"Operator '{key}' is not allowed in raw MongoDB queries")
+            _assert_no_forbidden_operators(value)
+    elif isinstance(raw_mongo, (list, tuple)):
+        for item in raw_mongo:
+            _assert_no_forbidden_operators(item)
+
+
 def _dict_to_mongo_query(query_dict):
     """Construct mongo query, allowing embedding of a raw mongo query.
 
@@ -97,9 +119,12 @@ def _dict_to_mongo_query(query_dict):
         - tags: List of tags
         - query: Raw MongoDB query dict (optional)
     :returns: MongoDB query dictionary
+    :raises: ValueError if the raw query contains JavaScript-executing
+             operators ($where, $function, $accumulator)
     """
     if "query" in query_dict and isinstance(query_dict["query"], dict):
         raw_mongo = query_dict["query"]
+        _assert_no_forbidden_operators(raw_mongo)
         del query_dict["query"]
     else:
         raw_mongo = {}
