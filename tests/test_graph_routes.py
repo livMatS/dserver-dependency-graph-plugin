@@ -40,6 +40,9 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -83,6 +86,9 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -126,6 +132,9 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -161,6 +170,9 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     for dependency_keys in dependency_keys_list:
         r = tmp_app_with_dependent_data.post(
