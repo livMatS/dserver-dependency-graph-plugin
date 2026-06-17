@@ -40,6 +40,9 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -50,7 +53,7 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
 
     uuid = "a2218059-5bd0-4690-b090-062faf08e044"  # brother
 
-    dependency_keys = ["readme.derived_from.uuid", "some_nonexistant_key"]
+    dependency_keys = ["readme_parsed.derived_from.uuid", "some_nonexistant_key"]
 
     r = tmp_app_with_dependent_data.post(
         "/graph/uuids/{}".format(uuid),
@@ -83,6 +86,9 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -126,6 +132,9 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -137,7 +146,7 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
     uuid = "a2218059-5bd0-4690-b090-062faf08e044"  # brother
 
     dependency_keys_list = [
-        ["readme.derived_from.uuid", "some_nonexistant_key_{}".format(i)] for i in range(12)]
+        ["readme_parsed.derived_from.uuid", "some_nonexistant_key_{}".format(i)] for i in range(12)]
 
     expected_response = []
     for role, p in testing_family.items():
@@ -161,6 +170,9 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
         m['frozen_at'] = False
         m['size_in_bytes'] = False
         m['number_of_items'] = False
+        # Server-stamped registration provenance (dynamic timestamp).
+        m['uploaded_at'] = False
+        m['uploaded_by'] = False
 
     for dependency_keys in dependency_keys_list:
         r = tmp_app_with_dependent_data.post(

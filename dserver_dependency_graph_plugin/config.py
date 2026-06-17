@@ -4,10 +4,19 @@ import os
 AFFIRMATIVE_EXPRESSIONS = ['true', '1', 'y', 'yes', 'on']
 
 
-CONFIG_SECRETS_TO_OBFUSCATE = []
+CONFIG_SECRETS_TO_OBFUSCATE = [
+    "MONGO_URI",
+    "MONGO_DB",
+    "MONGO_COLLECTION",
+]
 
 
 class Config(object):
+    # MongoDB connection settings
+    # These are required for the dependency graph plugin to connect to MongoDB
+    MONGO_URI = os.environ.get("MONGO_URI")
+    MONGO_DB = os.environ.get("MONGO_DB")
+    MONGO_COLLECTION = os.environ.get("MONGO_COLLECTION")
     # If enabled, the underlying database will offer dependency graph views on
     # the server's default collection. Those views offer on-the-fly-generated
     # collections of undirected per-dataset adjacency lists in order to
@@ -34,7 +43,7 @@ class Config(object):
     # a single key or a JSON-formatted list of keys.
     # Nested fields are separated by a dot (.)
     DEPENDENCY_KEYS = [
-        'readme.derived_from.uuid',
+        'readme_parsed.derived_from.uuid',
         'annotations.source_dataset_uuid'
     ]
 

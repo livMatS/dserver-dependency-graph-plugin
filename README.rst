@@ -151,7 +151,7 @@ graph by UUID is possible, i.e.
 .. code-block:: bash
 
     $ UUID=41a2e3e2-0c01-444f-bd7d-f9bb45512373
-    $ curl -H "$HEADER" http://localhost:5000/graph/lookup/$UUID
+    $ curl -H "$HEADER" http://localhost:5000/graph/uuids/$UUID
 
 Looking up a dependency graph by UUID will result in unique per-UUID hits.
 As it is possible for a dataset to be registered in more than one base
@@ -172,7 +172,7 @@ of desired dependency keys attached
     $ curl -H "$HEADER" -H "Content-Type: application/json"  \
         -X POST -d  \
         '["annotations.source_dataset_uuid","readme.derived_from.uuid"]'
-        http://localhost:5000/graph/lookup/$UUID
+        http://localhost:5000/graph/uuids/$UUID
 
 If a view for this particular set of keys does not exist yet, the server will
 generate and cache it on-the-fly. This can be observed in the mongo shell
@@ -217,7 +217,7 @@ and querying with a specific set of keys for the first time
     $ curl -H "$HEADER" -H "Content-Type: application/json"  \
         -X POST -d  \
         '["another.possibly_nested.dependency_key"]'  \
-        http://localhost:5000/graph/lookup/$UUID
+        http://localhost:5000/graph/uuids/$UUID
 
 will result in an additional view named uniquely by the current UTC time::
 
